@@ -1,4 +1,4 @@
-import { inject, injectable } from 'tsyringe';
+import { injectable, inject } from 'tsyringe';
 
 import AppError from '@shared/errors/AppError';
 
@@ -18,10 +18,10 @@ class CreateCustomerService {
   ) {}
 
   public async execute({ name, email }: IRequest): Promise<Customer> {
-    const checkIfUserExists = await this.customersRepository.findByEmail(email);
+    const customerExists = await this.customersRepository.findByEmail(email);
 
-    if (checkIfUserExists) {
-      throw new AppError('Email already in use');
+    if (customerExists) {
+      throw new AppError('Email already in use.');
     }
     const customer = await this.customersRepository.create({
       name,
